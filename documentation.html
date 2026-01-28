@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | IDDB Python SDK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0f1115;
+            --bg-surface: #17191e;
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --accent: #3b82f6;
+            --border: rgba(255, 255, 255, 0.05);
+        }
+        body {
+            background-color: var(--bg-base);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .code-card {
+            background: #000000;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+        .table-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .table-row:last-child { border-bottom: none; }
+    </style>
+</head>
+<body class="selection:bg-blue-500/30">
+
+    <nav class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#0f1115]/80 backdrop-blur-md">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 hover:text-blue-500 transition-colors">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span class="font-bold tracking-tight">IDDB <span class="text-blue-500">System</span></span>
+            </a>
+            <div class="flex items-center gap-3">
+                <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-bold rounded-md border border-yellow-500/30">BETA</span>
+                <span class="text-[10px] font-bold tracking-widest text-slate-500 bg-white/5 px-2 py-1 rounded">Version 0.1.0</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-16">
+        <header class="mb-16">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 text-sm font-bold rounded-md border border-yellow-500/30">BETA</span>
+                <span class="text-slate-500 text-sm">Early Access Documentation</span>
+            </div>
+            <h1 class="text-4xl font-bold mb-4 tracking-tight">Technical Reference</h1>
+            <p class="text-slate-400">Simplified documentation for integrating the IDDB Python library into your bot infrastructure.</p>
+        </header>
+
+        <!-- INSTALL -->
+        <section class="mb-16">
+            <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-blue-500 mb-6">01. Installation</h2>
+            <p class="text-sm text-slate-400 mb-4">Install the official package from PyPI:</p>
+            <div class="code-card mono text-blue-400 text-sm">
+                pip install iddb-system==0.1.0
+            </div>
+        </section>
+
+        <!-- INITIALIZATION -->
+        <section class="mb-16">
+            <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-blue-500 mb-6">02. Initialization</h2>
+            <p class="text-sm text-slate-400 mb-4">Set up the client within your bot's constructor to handle background tasks.</p>
+            <div class="code-card mono text-xs leading-relaxed">
+                <span class="text-blue-400">from</span> iddb.core <span class="text-blue-400">import</span> IDDBClient<br><br>
+                <span class="text-slate-500"># Inside your discord.Client or commands.Bot class</span><br>
+                self.iddb = IDDBClient(client=self, channel_id=1465966978618495028)<br><br>
+                <span class="text-blue-400">async def</span> setup_hook(self):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-blue-400">await</span> self.iddb.start()
+            </div>
+        </section>
+
+        <!-- LOGGING -->
+        <section class="mb-16">
+            <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-blue-500 mb-6">03. Methods</h2>
+            
+            <div class="mb-8">
+                <h3 class="font-bold mb-2">.log()</h3>
+                <p class="text-sm text-slate-400 mb-4">Pushes data to the queue for asynchronous logging.</p>
+                <div class="code-card mono text-xs">
+                    await bot.iddb.log(guild_id: int, action_type: str, metadata: dict)
+                </div>
+                
+                <div class="mt-4 border-t border-white/5">
+                    <div class="table-row">
+                        <span class="text-xs font-bold text-slate-500 uppercase">guild_id</span>
+                        <span class="text-xs">Target server ID (integer). Use 0 for global logs.</span>
+                    </div>
+                    <div class="table-row">
+                        <span class="text-xs font-bold text-slate-500 uppercase">action_type</span>
+                        <span class="text-xs">Category identifier (e.g. "USER_JOIN").</span>
+                    </div>
+                    <div class="table-row">
+                        <span class="text-xs font-bold text-slate-500 uppercase">metadata</span>
+                        <span class="text-xs">Dictionary containing your custom JSON data.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM SPECS -->
+        <section class="mb-16">
+            <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-blue-500 mb-6">04. Internal Architecture</h2>
+            <div class="grid gap-6">
+                <div class="bg-[#17191e] p-6 rounded-xl border border-white/5">
+                    <h4 class="text-sm font-bold mb-2">Rate Limiting</h4>
+                    <p class="text-xs text-slate-400">The SDK enforces a 2.5s delay between writes to ensure Discord API safety. High-frequency logs are automatically queued.</p>
+                </div>
+                <div class="bg-[#17191e] p-6 rounded-xl border border-white/5">
+                    <h4 class="text-sm font-bold mb-2">Fragmentation</h4>
+                    <p class="text-xs text-slate-400">Large metadata dictionaries exceeding 1800 characters are split into multiple ordered messages and linked via a unique Action ID.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-24 pt-8 border-t border-white/5 text-center">
+            <p class="text-[10px] uppercase tracking-widest text-slate-600">IDDB System Reference &bull; 2026</p>
+            <p class="text-[10px] uppercase tracking-widest text-yellow-500/60 mt-1">BETA VERSION</p>
+        </footer>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>
